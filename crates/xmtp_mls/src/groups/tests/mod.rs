@@ -12,6 +12,7 @@ mod test_message_disappearing_settings;
 #[cfg(not(target_arch = "wasm32"))]
 mod test_network;
 mod test_prepare_message_for_later_publish;
+mod test_proposals;
 mod test_send_message_opts;
 mod test_welcome_pointers;
 mod test_welcomes;
@@ -3847,6 +3848,7 @@ async fn respect_allow_epoch_increment() {
     );
 }
 
+#[cfg_attr(target_arch = "wasm32", ignore)]
 #[rstest]
 #[xmtp_common::test]
 #[awt]
