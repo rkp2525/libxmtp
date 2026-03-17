@@ -1,16 +1,8 @@
 use super::{
     group_membership::GroupMembership,
     group_permissions::{MembershipPolicies, MetadataPolicies, PermissionsPolicies},
-    mls_ext::{WrapperAlgorithm, WrapperEncryptionExtension},
 };
-use xmtp_configuration::{
-    GROUP_KEY_ROTATION_INTERVAL_NS, WELCOME_POINTEE_ENCRYPTION_AEAD_TYPES_EXTENSION_ID,
-};
-
-use crate::{
-    groups::mls_ext::WelcomePointersExtension,
-    verified_key_package_v2::{KeyPackageVerificationError, VerifiedKeyPackageV2},
-};
+use crate::groups::mls_ext::WelcomePointersExtension;
 use openmls::prelude::{
     MlsMessageOut,
     tls_codec::{Error as TlsCodecError, Serialize},
@@ -19,6 +11,12 @@ use prost::{Message, bytes::Bytes};
 use std::collections::{HashMap, HashSet};
 use thiserror::Error;
 use xmtp_common::types::Address;
+use xmtp_configuration::{
+    GROUP_KEY_ROTATION_INTERVAL_NS, WELCOME_POINTEE_ENCRYPTION_AEAD_TYPES_EXTENSION_ID,
+};
+use xmtp_id::key_package::{
+    KeyPackageVerificationError, VerifiedKeyPackageV2, WrapperAlgorithm, WrapperEncryptionExtension,
+};
 use xmtp_mls_common::group_mutable_metadata::MetadataField;
 use xmtp_proto::{
     ConversionError,
@@ -1012,10 +1010,8 @@ impl TryFrom<Vec<u8>> for PostCommitAction {
 
 #[cfg(test)]
 pub(crate) mod tests {
-    use crate::groups::send_message_opts::SendMessageOpts;
-    #[cfg(target_arch = "wasm32")]
-    wasm_bindgen_test::wasm_bindgen_test_configure!(run_in_dedicated_worker);
     use crate::context::XmtpSharedContext;
+    use crate::groups::send_message_opts::SendMessageOpts;
     use openmls::prelude::{ProcessedMessageContent, ProtocolMessage};
     use xmtp_api_d14n::protocol::XmtpQuery;
     use xmtp_cryptography::utils::generate_local_wallet;
